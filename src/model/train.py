@@ -5,8 +5,8 @@ import numpy as np
 
 # Import our custom modules
 from src import config
-from src.data_loader import create_data_generators
-from src.model import build_model
+from src.data_processing.data_loader import create_data_generators
+from src.model.architecture import build_model
 
 def get_dynamic_class_weights(train_dir):
     """Dynamically calculates weights based on current folder counts."""
@@ -26,8 +26,8 @@ def main():
     # 1. Load Data
     train_generator, validation_generator, test_generator = create_data_generators(
         train_dir=config.TRAIN_DATA,
-        val_dir=config.VAL_DATA,
-        test_dir=config.TEST_DATA,
+        val_dir=config.VAL_DIR,
+        test_dir=config.TEST_DIR,
         image_size=config.IMG_SIZE,
         batch_size=config.BATCH_SIZE
     )    
@@ -44,8 +44,9 @@ def main():
     callbacks = [
         # Saves the model ONLY when validation recall improves
         tf.keras.callbacks.ModelCheckpoint(
-            filepath="saved_models/best_pneumonia_model.keras",
+            filepath="saved_models/best_pneumonia_model.weights.h5",
             save_best_only=True,
+            save_weights_only=True,
             monitor="val_recall", 
             mode="max",
             verbose=1

@@ -1,0 +1,26 @@
+version : '3.8'
+
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    container_name: pneumonia_api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+  
+  frontend:
+    build: 
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: pneumonia_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_API_HOST=http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+    
