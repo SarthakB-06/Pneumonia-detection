@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind : deployment
+metadata:
+  name: pneumonia-api-deployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pneumonia-api
+  template:
+    metadata:
+      labels: 
+        app: pneumonia-api
+    spec:
+      containers:
+        - name: pneumonia-api
+          image: sarthakb725/pneumonia_api:v1
+          ports:
+            - containerPort: 8000
+          env:
+            - name: TF_USE_LEGACY_KERAS
+              value: 1
+
+
+
+apiVersion: v1
+kind: Service
+metadata: 
+  name: api-service
+spec: 
+  selector:
+    app: pneumonia-api
+  ports: 
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

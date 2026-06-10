@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pneumonia-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pneumonia-frontend
+  template:
+    metadata:
+      labels:
+        app: pneumonia-frontend
+    spec:
+      containers:
+        - name: pneumonia-frontend
+          image: sarthakb725/pneumonia_frontend:v1
+          ports:
+            - containerPort: 8501
+              env: 
+              - name: BACKEND_API_HOST
+                value: "http://api-service:8000"  
+
+
+
+apiVersion: v1
+kind : Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: pneumonia-frontend
+  ports: 
+    - protocol: TCP
+      port: 8501
+      targetPort: 8501
+
+
+
