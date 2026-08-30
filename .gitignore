@@ -8,6 +8,5 @@ wheels/
 
 # Virtual environments
 .venv
-data/
 notebooks/data/
-saved_models/
+data/
